@@ -1,25 +1,38 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar'
-import ChatContainer from '../components/ChatContainer'
-import RightSidebar from '../components/RightSidebar'
-import { useState } from 'react'
-import bgImage from "../assets/bgImage.svg"
-
+import React, { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import ChatContainer from "../components/ChatContainer";
+import RightSidebar from "../components/RightSidebar";
 
 const HomePage = () => {
-
-    const [selectedUser, setSelectedUser] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null);
 
   return (
-    <div className="border w-full h-screen sm:px-[8%] sm:py-[8%]">
-      <div className={`backdrop-blur-xl bg-black/40 border border-gray-600/50 rounded-2xl
-       overflow-hidden h-[100%] grid grid-cols-1 relative ${selectedUser ? 'md:grid-cols-[1fr_1.5fr_1fr]' : 'xl:grid-cols-[1fr_2fr_1fr] : md:grid-cols-2'}`}>
-        <Sidebar selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
+    <div className="border w-full h-screen sm:px-[6%] sm:py-[4%]">
+      <div
+        className={`backdrop-blur-xl bg-black/40 border border-gray-600/50 
+        rounded-2xl overflow-hidden h-full grid
+        ${
+          selectedUser
+            ? "md:grid-cols-[1fr_1.5fr_1fr]"
+            : "md:grid-cols-[1fr_2fr]"
+        }`}
+      >
+        {/* LEFT SIDEBAR */}
+        <Sidebar
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+        />
+
+        {/* CHAT AREA */}
         <ChatContainer selectedUser={selectedUser} />
-        <RightSidebar />
+
+        {/* RIGHT SIDEBAR */}
+        {selectedUser && (
+          <RightSidebar selectedUser={selectedUser} />
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

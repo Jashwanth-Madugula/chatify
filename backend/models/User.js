@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
         type: String, required: true, unique: true,
     },
     fullName: {
-        type: String, required: true, unique: true,
+        type: String, required: true,
     },
     password: {
         type: String, required: true,
@@ -15,6 +15,9 @@ const userSchema = new mongoose.Schema({
     },
     bio: {
         type: String, default: "",
+    },
+    lastSeen: {
+      type: Date, default: Date.now,
     },
 }, { timestamps: true });
 

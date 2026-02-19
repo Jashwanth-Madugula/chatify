@@ -1,38 +1,81 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import assets from '../assets/assets'
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import assets from "../assets/assets";
+import { AuthContext } from "../context/AuthContext";
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
+  const { authUser, updateProfile } = useContext(AuthContext);
 
-  const navigate = useNavigate()
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
 
-  const [selectedImage, setSelectedImage] = useState(null)
-  const [name, setName] = useState("Abcdefg")
-  const [bio, setBio] = useState("Tell about yourself in short")
+  // ==============================
+  // LOAD CURRENT USER DATA
+  // ==============================
+  useEffect(() => {
+    if (authUser) {
+      setName(authUser.fullName || "");
+      setBio(authUser.bio || "");
+    }
+  }, [authUser]);
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault()
-    navigate("/")
-  }
+  // ==============================
+  // HANDLE SUBMIT
+  // ==============================
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    let base64Image = null;
+
+    // Convert image to base64 if selected
+    if (selectedImage) {
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedImage);
+
+      reader.onloadend = async () => {
+        base64Image = reader.result;
+
+        await updateProfile({
+          fullName: name,
+          bio: bio,
+          profilePic: base64Image,
+        });
+
+        navigate("/");
+      };
+    } else {
+      await updateProfile({
+        fullName: name,
+        bio: bio,
+      });
+
+      navigate("/");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-cover bg-no-repeat">
-
-      {/* Main Card */}
-      <div className="w-[90%] max-w-4xl bg-black/40 backdrop-blur-xl
+      <div
+        className="w-[90%] max-w-4xl bg-black/40 backdrop-blur-xl
         border border-gray-600/40 rounded-2xl grid grid-cols-1 md:grid-cols-2
         overflow-hidden"
       >
-
         {/* LEFT SIDE – FORM */}
-        <div className="p-10 flex flex-col gap-6">
-
+        <form
+          onSubmit={onSubmitHandler}
+          className="p-10 flex flex-col gap-6"
+        >
           <h2 className="text-xl font-semibold text-white">
             Profile Information
           </h2>
 
           {/* Avatar Upload */}
-          <label htmlFor="avatar" className="flex items-center gap-4 cursor-pointer">
+          <label
+            htmlFor="avatar"
+            className="flex items-center gap-4 cursor-pointer"
+          >
             <input
               type="file"
               id="avatar"
@@ -45,7 +88,7 @@ const ProfilePage = () => {
               src={
                 selectedImage
                   ? URL.createObjectURL(selectedImage)
-                  : assets.avatar_icon
+                  : authUser?.profilePicture || assets.avatar_icon
               }
               alt="avatar"
               className="w-14 h-14 rounded-full object-cover border border-gray-500"
@@ -79,16 +122,16 @@ const ProfilePage = () => {
           {/* Button */}
           <button
             type="submit"
-            onClick={onSubmitHandler}
             className="mt-4 bg-[#ff5d5d] hover:bg-[#ff5d5d]/80
               text-white py-3 rounded-lg font-medium transition"
           >
             Update Profile
           </button>
-        </div>
+        </form>
 
-        {/* RIGHT SIDE – LOGO / VISUAL */}
-        <div className="hidden md:flex flex-col items-center justify-center
+        {/* RIGHT SIDE */}
+        <div
+          className="hidden md:flex flex-col items-center justify-center
           bg-gradient-to-br from-[#3a3f87]/40 to-[#1e1b2e]/80"
         >
           <img
@@ -101,10 +144,9 @@ const ProfilePage = () => {
             Keep your profile updated so your friends can recognize you easily.
           </p>
         </div>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;
