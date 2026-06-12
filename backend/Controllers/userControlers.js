@@ -11,7 +11,7 @@ export const signup = async (req, res) => {
     const { email, fullName, password, bio } = req.body;
 
     // Validation
-    if (!email || !fullName || !password || !bio) {
+    if (!email || !fullName || !password) {
       return res.status(400).json({
         success: false,
         message: "Please provide all required fields",
@@ -132,13 +132,14 @@ export const checkAuth = async (req, res) => {
 // ================= UPDATE PROFILE =================
 export const updateProfilePicture = async (req, res) => {
   try {
-    const { profilePicture, bio, fullName } = req.body;
+    const { profilePicture, profilePic, bio, fullName } = req.body;
+    const picToUpload = profilePicture || profilePic;
     const userId = req.user._id;
 
     let updatedUser;
 
     // Update without image
-    if (!profilePicture) {
+    if (!picToUpload) {
       updatedUser = await User.findByIdAndUpdate(
         userId,
         { bio, fullName },
@@ -146,7 +147,7 @@ export const updateProfilePicture = async (req, res) => {
       );
     } else {
       // Upload image to Cloudinary
-      const uploadResult = await cloudinary.uploader.upload(profilePicture);
+      const uploadResult = await cloudinary.uploader.upload(picToUpload);
 
       updatedUser = await User.findByIdAndUpdate(
         userId,

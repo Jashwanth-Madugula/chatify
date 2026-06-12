@@ -7,14 +7,14 @@ const HomePage = () => {
   const [selectedUser, setSelectedUser] = useState(null);
 
   return (
-    <div className="border w-full h-screen sm:px-[6%] sm:py-[4%]">
+    <div className="w-full h-full p-4 sm:p-6 overflow-hidden flex flex-col">
       <div
-        className={`backdrop-blur-xl bg-black/40 border border-gray-600/50 
-        rounded-2xl overflow-hidden h-full grid
+        className={`backdrop-blur-xl bg-panel-bg border border-border-main 
+        rounded-2xl overflow-hidden h-full grid flex-1
         ${
           selectedUser
-            ? "md:grid-cols-[1fr_1.5fr_1fr]"
-            : "md:grid-cols-[1fr_2fr]"
+            ? "md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)_minmax(0,1fr)]"
+            : "md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]"
         }`}
       >
         {/* LEFT SIDEBAR */}

@@ -40,7 +40,7 @@ const ProfilePage = () => {
         await updateProfile({
           fullName: name,
           bio: bio,
-          profilePic: base64Image,
+          profilePicture: base64Image,
         });
 
         navigate("/");
@@ -56,18 +56,18 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-no-repeat">
+    <div className="w-full h-full overflow-y-auto bg-cover bg-no-repeat p-6 flex flex-col items-center">
       <div
-        className="w-[90%] max-w-4xl bg-black/40 backdrop-blur-xl
-        border border-gray-600/40 rounded-2xl grid grid-cols-1 md:grid-cols-2
-        overflow-hidden"
+        className="w-[90%] max-w-4xl bg-panel-bg backdrop-blur-xl
+        border border-border-main rounded-2xl grid grid-cols-1 md:grid-cols-2
+        overflow-hidden shadow-xl my-auto"
       >
         {/* LEFT SIDE – FORM */}
         <form
           onSubmit={onSubmitHandler}
-          className="p-10 flex flex-col gap-6"
+          className="p-10 flex flex-col gap-6 text-text-main"
         >
-          <h2 className="text-xl font-semibold text-white">
+          <h2 className="text-xl font-semibold">
             Profile Information
           </h2>
 
@@ -91,10 +91,10 @@ const ProfilePage = () => {
                   : authUser?.profilePicture || assets.avatar_icon
               }
               alt="avatar"
-              className="w-14 h-14 rounded-full object-cover border border-gray-500"
+              className="w-14 h-14 rounded-full object-cover border border-border-main"
             />
 
-            <span className="text-sm text-gray-300">
+            <span className="text-sm text-text-main/70 hover:text-text-main transition">
               Click to change avatar
             </span>
           </label>
@@ -105,8 +105,8 @@ const ProfilePage = () => {
             value={name}
             placeholder="Name"
             onChange={(e) => setName(e.target.value)}
-            className="bg-[#282142]/70 text-white px-4 py-3 rounded-lg
-              outline-none border border-gray-600 focus:border-blue-500"
+            className="bg-input-bg text-text-main px-4 py-3 rounded-lg
+              outline-none border border-border-main/30 focus:border-blue-500 transition"
           />
 
           {/* Bio */}
@@ -115,15 +115,15 @@ const ProfilePage = () => {
             placeholder="Bio"
             onChange={(e) => setBio(e.target.value)}
             rows={4}
-            className="bg-[#282142]/70 text-white px-4 py-3 rounded-lg
-              outline-none border border-gray-600 focus:border-blue-500 resize-none"
+            className="bg-input-bg text-text-main px-4 py-3 rounded-lg
+              outline-none border border-border-main/30 focus:border-blue-500 resize-none transition"
           />
 
           {/* Button */}
           <button
             type="submit"
-            className="mt-4 bg-[#ff5d5d] hover:bg-[#ff5d5d]/80
-              text-white py-3 rounded-lg font-medium transition"
+            className="mt-4 bg-[#ff5d5d] hover:bg-[#ff5d5d]/85
+              text-white py-3 rounded-lg font-semibold transition cursor-pointer shadow-sm"
           >
             Update Profile
           </button>
@@ -132,15 +132,15 @@ const ProfilePage = () => {
         {/* RIGHT SIDE */}
         <div
           className="hidden md:flex flex-col items-center justify-center
-          bg-gradient-to-br from-[#3a3f87]/40 to-[#1e1b2e]/80"
+          bg-gradient-to-br from-[#3a3f87]/30 to-[#1e1b2e]/60 dark:from-[#3a3f87]/40 dark:to-[#1e1b2e]/90 border-l border-border-main/30"
         >
           <img
-            src={assets.logo_icon}
+            src={assets.logo}
             alt="logo"
-            className="w-40 h-40 rounded-full shadow-xl mb-6"
+            className="w-32 h-32 object-contain mb-6 transition hover:scale-105 duration-300"
           />
 
-          <p className="text-gray-300 text-sm px-6 text-center">
+          <p className="text-text-main/70 text-sm px-6 text-center leading-relaxed">
             Keep your profile updated so your friends can recognize you easily.
           </p>
         </div>

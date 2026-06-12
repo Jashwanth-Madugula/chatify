@@ -3,9 +3,13 @@ import mongoose from "mongoose";
 const messageSchema = new mongoose.Schema({
     senderId: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
     receiverId: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
+    associatedUserId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     text: {type: String,},
     image: {type: String,},
     seen: {type: Boolean, default: false},
+    isEdited: {type: Boolean, default: false},
+    isDeleted: {type: Boolean, default: false},
+    replyTo: {type: mongoose.Schema.Types.ObjectId, ref: "Message"},
 }, { timestamps: true });
 
 messageSchema.index({ senderId: 1, receiverId: 1 });

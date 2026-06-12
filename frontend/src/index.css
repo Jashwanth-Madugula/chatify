@@ -2,10 +2,44 @@
 
 @import "tailwindcss";
 
-*{
-  font-family: "Outfit", sans-serif;
+@theme {
+  --color-app-bg: var(--app-bg);
+  --color-text-main: var(--text-main);
+  --color-panel-bg: var(--panel-bg);
+  --color-border-main: var(--border-main);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-chat-bg: var(--chat-bg);
+  --color-input-bg: var(--input-bg);
+  --color-header-bg: var(--header-bg);
 }
 
-::webkit-scrollbar {
+:root {
+  --app-bg: #f1f5f9;
+  --text-main: #0f172a;
+  --panel-bg: #ffffff;
+  --border-main: #e2e8f0;
+  --sidebar-bg: #f8fafc;
+  --chat-bg: #f1f5f9;
+  --input-bg: #e2e8f0;
+  --header-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+  --app-bg: #080c14;
+  --text-main: #f8fafc;
+  --panel-bg: #0f172a;
+  --border-main: #1e293b;
+  --sidebar-bg: #0d1321;
+  --chat-bg: #080c14;
+  --input-bg: #1e293b;
+  --header-bg: #0f172a;
+}
+
+* {
+  font-family: "Outfit", sans-serif;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+::-webkit-scrollbar {
   display: none;
 }

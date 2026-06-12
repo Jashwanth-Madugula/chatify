@@ -58,31 +58,32 @@ export const AuthProvider = ({ children }) => {
   // ======================
   // LOGIN / SIGNUP
   // ======================
-  const login = async (type, credentials) => {
-    try {
-      const { data } = await axios.post(
-        `${BACKEND_URL}/api/auth/signUp`,
-        credentials
-      );
+ const login = async (type, credentials) => {
+  try {
+    const { data } = await axios.post(
+      `${BACKEND_URL}/api/auth/${type}`,
+      credentials
+    );
 
-      if (data.success) {
-        setAuthUser(data.userData);
-        setToken(data.token);
+    if (data.success) {
+      setAuthUser(data.userData);
+      setToken(data.token);
 
-        localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.token);
 
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${data.token}`;
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${data.token}`;
 
-        connectSocketHandler(data.userData);
+      connectSocketHandler(data.userData);
 
-        toast.success(`${type} successful!`);
-      }
-    } catch (err) {
-      toast.error("Authentication failed.");
+      toast.success(`${type} successful!`);
     }
-  };
+  } catch (err) {
+    console.log(err.response?.data);
+    toast.error("Authentication failed.");
+  }
+};
 
   // ======================
   // LOGOUT
@@ -124,6 +125,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
+
   // ======================
   // AUTO LOGIN
   // ======================
@@ -145,6 +157,8 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         updateProfile,
+        theme,
+        toggleTheme,
       }}
     >
       {children}
